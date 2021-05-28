@@ -5,7 +5,7 @@ class CreateContacts < ActiveRecord::Migration[6.1]
       t.string :lastname
       t.string :phone_number
       t.string :email
-      t.boolean :email_confirmation
+      t.boolean :email_confirmation, default: false
 
       t.timestamps
     end
