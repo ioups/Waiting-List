@@ -12,6 +12,7 @@ class ContactsController < ApplicationController
     def create
         @contact = Contact.new(params[contact_params])
         if @contact.save
+          ContactMailer.welcome(@contact).deliver_now
           flash[:success] = "contact successfully created"
           redirect_to @contact
         else
@@ -21,11 +22,11 @@ class ContactsController < ApplicationController
     end
     
     def edit
-        @contact = Contact.find(params[:id])
+        find_contact
     end
 
     def update
-        @contact = Contact.find(params[:id])
+        find_contact
         if @contact.update(contact_params)
           flash[:success] = "contact was successfully updated"
           redirect_to @contact
@@ -38,7 +39,7 @@ class ContactsController < ApplicationController
     
 
     def destroy
-        @contact = Contact.find(params[:id])
+        find_contact
         if @contact.destroy
             flash[:success] = 'contact was successfully deleted.'
             redirect_to contacts_url
@@ -49,7 +50,11 @@ class ContactsController < ApplicationController
     end
     
     private
-    
+
+    def find_contact
+        @contact = Contact.find(params[:id])
+    end
+
     def contact_params
         params.require(:contact).permit(:firstname, :lastname, :email, :phone_number) 
     end
