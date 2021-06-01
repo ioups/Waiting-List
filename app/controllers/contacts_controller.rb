@@ -14,12 +14,26 @@ class ContactsController < ApplicationController
         if @contact.save
           ContactMailer.welcome(@contact).deliver_now
           flash[:success] = "contact successfully created"
-          redirect_to @contact
+          redirect_to root_path
         else
           flash[:error] = "Something went wrong"
           render 'new'
         end
     end
+
+    def confirm_email
+        @contact = Contact.find_by_confirm_token(params[:id])
+        if @contact
+            @contact.confirmed!
+            @contact.validated_on!
+            flash[:success] = "Added on the wait list !"
+            redirect_to root_path
+        else
+            flash[:error] = "something went wrong"
+            redirect_to root_path
+        end
+    end
+    
     
     def edit
         find_contact
