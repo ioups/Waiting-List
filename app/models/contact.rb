@@ -8,19 +8,19 @@ class Contact < ApplicationRecord
 
 
     def confirmed!
-        email_confirmation = true
-        confirm_token = nil
+        self.email_confirmation = true
+        self.confirm_token = nil
         save!
         
     end
     def validated_on!
-        validated_on = DateTime.now
+        self.validated_on = DateTime.now
         save!
     end
     
     
     def renew!
-        renewed_on = DateTime.now
+        self.renewed_on = DateTime.now
         save!
     end
    
