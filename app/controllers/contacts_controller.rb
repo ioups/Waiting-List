@@ -10,7 +10,7 @@ class ContactsController < ApplicationController
     end
 
     def create
-        @contact = Contact.new(params[contact_params])
+        @contact = Contact.new(contact_params)
         if @contact.save
           ContactMailer.welcome(@contact).deliver_now
           flash[:success] = "contact successfully created"

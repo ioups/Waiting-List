@@ -1,0 +1,9 @@
+<div class="container">
+    <%= simple_form_for @contact do |f| %>
+    <%= f.input :firstname, label: "Enter your Firstname" %>
+    <%= f.input :lastname, label: "Enter your Lastname" %>
+    <%= f.input :phone_number, label: "Enter your phone number" %>
+    <%= f.input :email, label: "Enter your email" %>
+    <%= f.submit "Inscrivez moi !", class: "btn btn-primary" %>
+    <% end %>
+</div>
