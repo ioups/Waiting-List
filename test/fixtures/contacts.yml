@@ -1,0 +1,9 @@
+<% 5.times do |i| %>
+contact_<%= i %>:
+  firstname: <%= Faker::Name.first_name %> 
+  lastname: <%= Faker::Name.last_name %> 
+  phone_number: <%= Faker::PhoneNumber.cell_phone %> 
+  email: <%=Faker::Internet.email %> 
+  id: <%= i %>
+  confirm_token: <%= SecureRandom.urlsafe_base64.to_s %>
+<% end %>

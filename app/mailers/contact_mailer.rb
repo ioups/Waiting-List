@@ -8,6 +8,6 @@ class ContactMailer < ApplicationMailer
   def welcome(contact)
     @contact = contact
 
-    mail to: contact.email, subject: "welcome to the Brest-Coworking waiting list"
+    mail to: @contact.email, subject: "welcome to the Brest-Coworking waiting list"
   end
 end
