@@ -10,4 +10,14 @@ class ContactMailer < ApplicationMailer
 
     mail to: @contact.email, subject: "welcome to the Brest-Coworking waiting list"
   end
+
+  def hello
+    mail(
+      subject: 'hello from postmark',
+      to: "test@blackhole.postmarkapp.com",
+      from: 'pierre@brest-coworking.xyz',
+      html_body: '<strong>Hello</strong> dear Postmark user.',
+      track_opens: 'true',
+      message_stream: 'outbound')
+  end
 end
