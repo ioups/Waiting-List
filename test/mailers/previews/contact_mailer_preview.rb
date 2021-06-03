@@ -3,7 +3,7 @@ class ContactMailerPreview < ActionMailer::Preview
 
   # Preview this email at http://localhost:3000/rails/mailers/contact_mailer/welcome
   def welcome
-    contact = Contact.first
+    contact = Contact.last
     ContactMailer.welcome(contact)
   end
 
