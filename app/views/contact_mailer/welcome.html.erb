@@ -1,11 +1,12 @@
 
-<p>
-  Hello <%= @contact.firstname %>, 
-</p>
-<p>
- Welcome to the Brest-Coworking waiting.
+<p> Hello <%= @contact.firstname %>, </p>
 
- Please use the link below to validate your subscrition : 
-  <%= link_to "Confirm your subscription on the waiting list", confirm_email_contact_url(@contact.confirm_token)%>
-  <%= link_to "Get to the home page", root_url %>
-</p>
+<p> Bienvenue chez Brest-Coworking ! Nous t'invitons à valider ton inscription sur la liste 
+d'attente afin de réserver au plus vite un espace de travail chez nous. </p>
+
+<p>Utilise le lien suivant afin de valider ton inscription : </p>
+
+<p> <%= link_to "Confirm your subscription on the waiting list", confirm_email_contact_url(@contact.confirm_token)%> </p> 
+ 
+ 
+<p> Amicalement, toute l'équipe de <%= link_to "Brest-coworking", root_url %>. </p>

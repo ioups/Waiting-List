@@ -4,6 +4,13 @@ class ContactsController < ApplicationController
         @contacts = Contact.where("email_confirmation = false")
     end
     
+    def show
+        find_contact
+        @prospects = Contact.where("email_confirmation = true")
+        @list = @prospects.sort_by{ |contact| contact[:validated_on]}
+        @position = @list.index{ |contact| contact[:email] == @contact.email} + 1
+    end
+    
     
     def new
         @contact = Contact.new
@@ -13,11 +20,11 @@ class ContactsController < ApplicationController
         @contact = Contact.new(contact_params)
         if @contact.save
           ContactMailer.welcome(@contact).deliver_now
-          flash[:success] = "contact successfully created"
           redirect_to root_path
+          flash[:success] = "contact successfully created"
         else
-          flash[:error] = "Something went wrong"
           render 'new'
+          flash[:error] = "Something went wrong"
         end
     end
 
@@ -26,11 +33,11 @@ class ContactsController < ApplicationController
         if @contact
             @contact.confirmed!
             @contact.validated_on!
+            redirect_to contact_path(@contact)
             flash[:success] = "Added on the wait list !"
-            redirect_to root_path
         else
-            flash[:error] = "something went wrong"
             redirect_to root_path
+            flash[:error] = "something went wrong"
         end
     end
     
@@ -42,11 +49,11 @@ class ContactsController < ApplicationController
     def update
         find_contact
         if @contact.update(contact_params)
-          flash[:success] = "contact was successfully updated"
           redirect_to @contact
+          flash[:success] = "contact was successfully updated"
         else
-          flash[:error] = "Something went wrong"
           render 'edit'
+          flash[:error] = "Something went wrong"
         end
     end
     
@@ -55,11 +62,11 @@ class ContactsController < ApplicationController
     def destroy
         find_contact
         if @contact.destroy
+            redirect_to contacts_url
             flash[:success] = 'contact was successfully deleted.'
-            redirect_to contacts_url
         else
-            flash[:error] = 'Something went wrong'
             redirect_to contacts_url
+            flash[:error] = 'Something went wrong'
         end
     end
     
@@ -72,5 +79,6 @@ class ContactsController < ApplicationController
     def contact_params
         params.require(:contact).permit(:firstname, :lastname, :email, :phone_number) 
     end
+
     
 end
