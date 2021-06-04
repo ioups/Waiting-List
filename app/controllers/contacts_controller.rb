@@ -20,11 +20,13 @@ class ContactsController < ApplicationController
         @contact = Contact.new(contact_params)
         if @contact.save
           ContactMailer.welcome(@contact).deliver_now
+          flash[:notice] = "contact successfully created"
           redirect_to root_path
-          flash[:success] = "contact successfully created"
+          
         else
+          flash[:notice] = "Something went wrong"
           render 'new'
-          flash[:error] = "Something went wrong"
+          
         end
     end
 
@@ -33,11 +35,13 @@ class ContactsController < ApplicationController
         if @contact
             @contact.confirmed!
             @contact.validated_on!
+            flash[:notice] = "Added on the wait list !"
             redirect_to contact_path(@contact)
-            flash[:success] = "Added on the wait list !"
+            
         else
+            flash[:notice] = "something went wrong"
             redirect_to root_path
-            flash[:error] = "something went wrong"
+            
         end
     end
     
@@ -49,11 +53,13 @@ class ContactsController < ApplicationController
     def update
         find_contact
         if @contact.update(contact_params)
+          flash[:notice] = "contact was successfully updated"
           redirect_to @contact
-          flash[:success] = "contact was successfully updated"
+          
         else
+          flash[:notice] = "Something went wrong"
           render 'edit'
-          flash[:error] = "Something went wrong"
+          
         end
     end
     
@@ -63,10 +69,10 @@ class ContactsController < ApplicationController
         find_contact
         if @contact.destroy
             redirect_to contacts_url
-            flash[:success] = 'contact was successfully deleted.'
+            flash[:notice] = 'contact was successfully deleted.'
         else
             redirect_to contacts_url
-            flash[:error] = 'Something went wrong'
+            flash[:notice] = 'Something went wrong'
         end
     end
     
