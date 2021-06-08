@@ -33,7 +33,7 @@ class ContactsController < ApplicationController
     def create
         @contact = Contact.new(contact_params)
         if @contact.save
-          ContactMailer.welcome(@contact).deliver_now
+          ContactMailer.welcome(@contact).deliver_later
           flash[:notice] = "contact successfully created"
           redirect_to root_path
           
@@ -49,6 +49,7 @@ class ContactsController < ApplicationController
         if @contact
             @contact.confirmed!
             @contact.validated_on!
+            Check20Job.perform_later(@contact.id)
             flash[:notice] = "Added on the wait list !"
             redirect_to contact_path(@contact)
             
