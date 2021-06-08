@@ -1,9 +1,5 @@
 class ContactsController < ApplicationController
-    def index
-        @prospects = Contact.where("email_confirmation = true")
-        @contacts = Contact.where("email_confirmation = false")
-    end
-    
+   
     def show
         find_contact
         if @contact.validated_on.nil? && @contact.email_confirmation == false 
@@ -49,7 +45,8 @@ class ContactsController < ApplicationController
         if @contact
             @contact.confirmed!
             @contact.validated_on!
-            Check20Job.perform_later(@contact.id)
+            ContactMailer.renew(@contact).deliver_later(wait_until: 15.days.from_now)
+            Check20Job.set(wait_until: 20.days.from_now).perform_later(@contact.id)
             flash[:notice] = "Added on the wait list !"
             redirect_to contact_path(@contact)
             
@@ -64,6 +61,8 @@ class ContactsController < ApplicationController
         @contact = Contact.find_by_confirm_token(params[:id])
         if @contact
             @contact.renew!
+            ContactMailer.renew(@contact).deliver_later(wait_until: 15.days.from_now)
+            Check20Job.set(wait_until: 20.days.from_now).perform_later(@contact.id)
             flash[:notice] = "Position confirmed!"
             redirect_to contact_path(@contact)
             
@@ -87,37 +86,7 @@ class ContactsController < ApplicationController
             
         end
     end
-    
-    def edit
-        find_contact
-    end
-
-    def update
-        find_contact
-        if @contact.update(contact_params)
-          flash[:notice] = "contact was successfully updated"
-          redirect_to @contact
-          
-        else
-          flash[:notice] = "Something went wrong"
-          render 'edit'
-          
-        end
-    end
-    
-    
-
-    def destroy
-        find_contact
-        if @contact.destroy
-            redirect_to contacts_url
-            flash[:notice] = 'contact was successfully deleted.'
-        else
-            redirect_to contacts_url
-            flash[:notice] = 'Something went wrong'
-        end
-    end
-    
+        
     private
 
     def find_contact
