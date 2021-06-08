@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: 'pages#home'
-  resources :contacts, only: [:show, :new, :create] do 
+  resources :contacts do 
     member do
       get :confirm_email
       get :renew_email
