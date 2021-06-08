@@ -2,7 +2,7 @@
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Hello <%= @contact.firstname %> 🌞</h1>
-        <p class="lead text-muted"> Ta position dans la liste d'attente est la suivante :</p>
+        <p class="lead text-muted"> <%= @text %></p>
         <h2 class="fw-light"> <%= @position %> </h2>
         <p>
           <%= link_to "retour à la page d'acceuil", root_path, class: "btn btn-outline-dark my-2" %>

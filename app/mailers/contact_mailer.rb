@@ -16,6 +16,17 @@ class ContactMailer < ApplicationMailer
       message_stream: 'outbound')
   end
 
+  def renew(contact)
+    @contact = contact
+
+    mail( 
+      to: @contact.email, 
+      subject: "welcome to the Brest-Coworking waiting list",
+      from: 'pierre@brest-coworking.xyz',
+      track_opens: 'true',
+      message_stream: 'outbound')
+  end
+
   def hello
     mail(
       subject: 'hello from postmark',
@@ -25,4 +36,8 @@ class ContactMailer < ApplicationMailer
       track_opens: 'true',
       message_stream: 'outbound')
   end
+
+
+  
+
 end

@@ -1,0 +1,25 @@
+<p> Hello <%= @contact.firstname %>, </p>
+
+<p> Tu es toujours inscrit sur la lite d'attente de Brest-Coworking </p>
+
+<ul>
+    <li>
+        <p>Utilise le lien suivant afin de confirmer ton inscription et garder ta place dans notre liste d'attente : </p>
+        <p> <%= link_to "securise ta place", renew_email_contact_url(@contact.confirm_token)%> </p> 
+    </li>
+
+    <li>
+        <p>Utilise le lien suivant si tu souhaites annuler ta demande </p>
+        <p> <%= link_to "Annuler inscription", optout_email_contact_url(@contact.confirm_token)%> </p> 
+    </li>
+    <li>
+        <p>Ton inscription sera automatiquement annulée sans action de ta part, 20 jours après ta dernière confirmation.</p>
+    </li>
+</ul>
+
+
+
+
+ 
+ 
+<p> Amicalement, toute l'équipe de <%= link_to "Brest-coworking", root_url %>. </p>

@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :contacts do 
     member do
       get :confirm_email
+      get :renew_email
+      get :optout_email
     end
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

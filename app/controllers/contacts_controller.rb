@@ -6,9 +6,23 @@ class ContactsController < ApplicationController
     
     def show
         find_contact
-        @prospects = Contact.where("email_confirmation = true")
-        @list = @prospects.sort_by{ |contact| contact[:validated_on]}
-        @position = @list.index{ |contact| contact[:email] == @contact.email} + 1
+        if @contact.validated_on.nil? && @contact.email_confirmation == false 
+            @text = "Tu n'as pas encore de position dans la liste! verifie tes emails 🙂"
+            @position = "Inscritpion non confirmée"
+        elsif @contact.validated_on != nil && @contact.email_confirmation == false
+            @text = "Ton inscription sur la liste est bien annulée. N'hésites pas à revenir."
+            @position = "😢"
+        elsif @contact.email_confirmation == true && @contact.renewed_on !=nil
+            @prospects = Contact.where("email_confirmation = true")
+            @list = @prospects.sort_by{ |contact| contact[:validated_on]}
+            @text = "Ta position dans la liste d'attente est bien renouvellée à la place suivante:"
+            @position = @list.index{ |contact| contact[:email] == @contact.email} + 1
+        else
+            @prospects = Contact.where("email_confirmation = true")
+            @list = @prospects.sort_by{ |contact| contact[:validated_on]}
+            @text = "Ta position dans la liste d'attente est la suivante:"
+            @position = @list.index{ |contact| contact[:email] == @contact.email} + 1
+        end
     end
     
     
@@ -44,7 +58,34 @@ class ContactsController < ApplicationController
             
         end
     end
+
+    def renew_email
+        @contact = Contact.find_by_confirm_token(params[:id])
+        if @contact
+            @contact.renew!
+            flash[:notice] = "Position confirmed!"
+            redirect_to contact_path(@contact)
+            
+        else
+            flash[:notice] = "something went wrong"
+            redirect_to root_path
+            
+        end
+    end
     
+    def optout_email
+        @contact = Contact.find_by_confirm_token(params[:id])
+        if @contact
+            @contact.optout!
+            flash[:notice] = "Removed from the list!"
+            redirect_to contact_path(@contact)
+            
+        else
+            flash[:notice] = "something went wrong"
+            redirect_to root_path
+            
+        end
+    end
     
     def edit
         find_contact
