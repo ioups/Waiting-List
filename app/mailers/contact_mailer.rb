@@ -10,7 +10,7 @@ class ContactMailer < ApplicationMailer
 
     mail( 
       to: @contact.email, 
-      subject: "welcome to the Brest-Coworking waiting list",
+      subject: "Votre inscription sur la liste d'attente de Brest-Coworking",
       from: 'pierre@brest-coworking.xyz',
       track_opens: 'true',
       message_stream: 'outbound')
@@ -21,7 +21,18 @@ class ContactMailer < ApplicationMailer
 
     mail( 
       to: @contact.email, 
-      subject: "welcome to the Brest-Coworking waiting list",
+      subject: "Brest-Coworking : confirmez votre position dans la liste d'attente",
+      from: 'pierre@brest-coworking.xyz',
+      track_opens: 'true',
+      message_stream: 'outbound')
+  end
+
+  def optout(contact)
+    @contact = contact
+
+    mail( 
+      to: @contact.email, 
+      subject: "Brest-Coworking : votre inscription sur la liste d'attente est annulée",
       from: 'pierre@brest-coworking.xyz',
       track_opens: 'true',
       message_stream: 'outbound')
